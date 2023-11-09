@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -36,16 +36,13 @@ public class Produto extends Generic{
     private String nome;
 
     @NotBlank(message = "O preço do produto não pode ser nulo ou em branco.")
-    @Pattern(regexp = "[0-9.,]$", message = "O preço do produto está inválido")
-    private String preco;
+    private BigDecimal preco;
 
     @NotBlank(message = "O nome do produto não pode ser nulo ou em branco.")
-    @Pattern(regexp = "[0-9]$", message = "O preço do produto está inválido")
-    private String estoque;
+    private Double estoque;
 
     @NotBlank(message = "O nome do produto não pode ser nulo ou em branco.")
-    @Pattern(regexp = "[0-9]{8}$", message = "O preço do produto está inválido")
-    private String codigoBarras;
+    private Double codigoBarras;
 
     @Enumerated(EnumType.STRING)
     private ProdutoEnum tipoProduto;
