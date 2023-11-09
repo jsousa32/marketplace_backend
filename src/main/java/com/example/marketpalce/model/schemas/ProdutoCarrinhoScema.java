@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -28,8 +29,8 @@ public class ProdutoCarrinhoScema {
     private UUID produtoId;
 
     @Column(name = "quantidade_produto", nullable = false)
-    private String quantidadeProduto;
+    private Integer quantidadeProduto;
 
     @Column(nullable = false)
-    private String total;
+    private BigDecimal total;
 }
