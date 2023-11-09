@@ -67,13 +67,19 @@ public class UsuarioBusiness {
         usuario.setId(usuarioIdKeycloak);
         usuario.setTokenEmail(tokenEmail.toString());
 
-        usuarioRepository.save(mapper(usuario, UsuarioSchema.class));
+        saveUsuario(usuario);
 
     }
 
-    public Page<Usuario> findAll(Pageable pageable) {
-        return usuarioRepository.findAll(pageable)
+    public Page<Usuario> findAllAndDisabled(Boolean disabled, Pageable pageable) {
+        return usuarioRepository.findAllByDisabled(disabled, pageable)
                 .map(u -> mapper(u, Usuario.class));
+    }
+
+    public Usuario findByIdAndDisabled(String usuarioId, Boolean disabled) {
+        return usuarioRepository.findByIdAndDisabled(usuarioId, disabled)
+                .map(u -> mapper(u, Usuario.class))
+                .orElseThrow(() -> new GlobalException("Usuario não encontrado.", HttpStatus.NOT_FOUND));
     }
 
     public void update(String usuarioId, Usuario usuario) {
@@ -91,18 +97,28 @@ public class UsuarioBusiness {
 
         userResource.update(userRepresentation);
 
-        usuarioRepository.save(mapper(usuarioDatabase, UsuarioSchema.class));
+        saveUsuario(usuarioDatabase);
     }
 
     public void delete(String usuarioId) {
-
-        Usuario usuario = mapper(usuarioRepository.getReferenceById(usuarioId), Usuario.class);
+        Usuario usuario = findByIdAndDisabled(usuarioId, false);
 
         if (Objects.isNull(usuario)) {
             throw new GlobalException("Não foi possível localizar o usuário com o Id " + usuarioId, HttpStatus.BAD_REQUEST);
         }
 
-        usuarioRepository.delete(mapper(usuario, UsuarioSchema.class));
+        usuario.setDisabled(true);
 
+        UserRepresentation userRepresentation = userRepresentantion(usuario);
+
+        UserResource userResource = keycloakInstanceService.getUserResource().get(usuario.getId());
+
+        userResource.update(userRepresentation);
+
+        saveUsuario(usuario);
+    }
+
+    private void saveUsuario(Usuario usuarioDatabase) {
+        usuarioRepository.save(mapper(usuarioDatabase, UsuarioSchema.class));
     }
 }
