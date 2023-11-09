@@ -6,6 +6,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.modelmapper.ModelMapper;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The Class MapperUtils
@@ -19,6 +20,10 @@ public class MapperUtils {
 
     public static <T> T mapper(Object source, Class<T> result) {
         return modelMapper.map(source, result);
+    }
+
+    public static <S, T> List<T> mapperList(List<S> source, Class<T> result) {
+        return source.stream().map(entity -> modelMapper.map(entity, result)).collect(Collectors.toList());
     }
 
     public static UserRepresentation userRepresentantion(Usuario usuario) {
