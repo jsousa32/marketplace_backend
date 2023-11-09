@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace
+    username: postgres
+    password: 1234@Mudar
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/marketplace
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
+env:
+  keycloak:
+    urlBase: http://localhost:8081/
+    admin:
+      clientId: admin-cli
+      secret: a8QhXMXE6bRL2rGCovVgWLkj7ad93Kwv
+      username: admin
+      password: admin
+      realm: master
+    user:
+      clientId: desenvolvimento
+      secret: M0eYzjBsHrV8MEf3FutV7Hfr8IFPlqg2
+      realm: marketplace
