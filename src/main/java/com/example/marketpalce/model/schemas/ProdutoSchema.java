@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -35,13 +36,13 @@ public class ProdutoSchema extends GenericSchema {
     private String nome;
 
     @Column(nullable = false)
-    private String preco;
+    private BigDecimal preco;
 
     @Column(nullable = false)
-    private String estoque;
+    private Double estoque;
 
     @Column(name = "codigo_barras", nullable = false)
-    private String codigoBarras;
+    private Double codigoBarras;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_produto", nullable = false)
